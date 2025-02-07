@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const [email, setEmail] = useState("");
+    const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen w-full text-center px-4">
+        <div className="flex flex-col items-center justify-center min-h-screen w-full text-center px-6 md:mt-10 mt-0">
             <h1 className="text-5xl font-bold">
                 Detect Fake Profiles. <span className="text-blue-600">Instantly.</span>
             </h1>
@@ -14,11 +16,19 @@ const Home = () => {
 
             {/* Feature Buttons (Centered on Mobile) */}
             <div className="mt-6 flex flex-wrap justify-center gap-3 w-full max-w-sm">
-                <button className="w-60 px-4 py-3 bg-purple-200 text-purple-700 rounded-lg font-medium shadow-sm">
+                <button
+                    className="w-60 px-4 py-3 bg-purple-200 text-purple-700 rounded-lg font-medium shadow-sm"
+                    onClick={() => navigate("/profile-analysis")}
+                >
                     🔍 Profile Analysis
                 </button>
-                <button className="w-60 px-1 py-3 bg-green-200 text-green-700 rounded-lg font-medium shadow-sm">
+                <button className="w-60 px-1 py-3 bg-green-200 text-green-700 rounded-lg font-medium shadow-sm"
+                onClick={() => navigate("/message-spam-detector")}>
                     🤖 Message Spam Detection
+                </button>
+                <button className="w-60 px-1 py-3 bg-blue-200 text-blue-700 rounded-lg font-medium shadow-sm"
+                onClick={() => navigate("/image-spam-detector")}>
+                    📸 Image Spam Detection
                 </button>
             </div>
 

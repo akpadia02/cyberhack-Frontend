@@ -52,16 +52,16 @@ const NewsCarousel = () => {
   });
 
   return (
-    <div {...handlers} className="max-w-7xl w-full mx-auto p-4 mt-10">
-      <div className="relative flex flex-col md:flex-row md:h-[400px] rounded-lg overflow-hidden bg-white shadow-lg">
+    <div {...handlers} className="max-w-7xl grid place-content-center px-4 h-screen w-full mx-auto mt-10">
+      <div className="relative flex flex-col h-[80vh] md:flex-row md:h-[80vh] rounded-lg overflow-hidden bg-white shadow-lg">
         {/* Image Section with Animation */}
-        <div className="w-full md:w-1/2">
+        <div className="w-full">
           <AnimatePresence mode="wait">
             <motion.img
               key={currentIndex}
               src={newsData[currentIndex].image}
               alt="News"
-              className="w-full h-64 md:h-full object-cover"
+              className="w-full md:h-full object-fit    "
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
@@ -71,7 +71,7 @@ const NewsCarousel = () => {
         </div>
 
         {/* Text Section */}
-        <div className="p-6 w-full flex flex-col justify-center h-max">
+        <div className="p-6 w-full h-full flex flex-col justify-center">
           <h2 className="text-2xl font-bold">{newsData[currentIndex].title}</h2>
           <p className="mt-3 text-gray-700">{newsData[currentIndex].content}</p>
           <p className="mt-4 text-sm text-gray-500">Source: {newsData[currentIndex].source}</p>
