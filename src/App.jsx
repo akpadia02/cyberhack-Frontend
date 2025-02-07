@@ -15,6 +15,7 @@ import Contact from "./components/Contact";
 import Pricing from "./components/Pricing";
 import SignInPage from "./components/SignIn";
 import SignUpPage from "./components/SignUp";
+import CyberSecurityQuiz from "./components/CyberSecurityQuiz";
 
 // ✅ Function to save user data in Firestore
 const saveUserToFirestore = async (user, getToken) => {
@@ -59,7 +60,7 @@ const saveUserToFirestore = async (user, getToken) => {
 // ✅ Component to handle user saving
 const SaveUser = () => {
   const { user } = useUser();
-  const { getToken } = useAuth(); // Get token function from Clerk
+  const { getToken } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -68,7 +69,7 @@ const SaveUser = () => {
     }
   }, [user]);
 
-  return null; // This component does not render anything
+  return null;
 };
 
 function App() {
@@ -76,38 +77,80 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={
-          <SignedIn>
-            <SaveUser /> {/* Ensures user is saved in Firestore */}
-            <Home />
-          </SignedIn>
-        } />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/news" element={<NewsCarousel />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        {/* Home is accessible to everyone */}
+        <Route path="/" element={<Home />} />
 
         {/* Protected Routes */}
         <Route
+          path="/about-us"
+          element={
+            <SignedIn>
+              <AboutUs />
+            </SignedIn>
+          }
+        />
+        <Route
+          path="/news"
+          element={
+            <SignedIn>
+              <NewsCarousel />
+            </SignedIn>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <SignedIn>
+              <Contact />
+            </SignedIn>
+          }
+        />
+        <Route
+          path="/pricing"
+          element={
+            <SignedIn>
+              <Pricing />
+            </SignedIn>
+          }
+        />
+        <Route
+          path="/quiz"
+          element={
+            <SignedIn>
+              <CyberSecurityQuiz />
+            </SignedIn>
+          }
+        />
+
+        {/* Highly Restricted Routes */}
+        <Route
           path="/profile-analysis"
           element={
-            <ProfileAnalysis />
+            <SignedIn>
+              <ProfileAnalysis />
+            </SignedIn>
           }
         />
         <Route
           path="/message-spam-detector"
           element={
-            <MessageSpamDetector/>
+            <SignedIn>
+              <MessageSpamDetector />
+            </SignedIn>
           }
         />
         <Route
           path="/image-spam-detector"
           element={
+            <SignedIn>
               <ImageSpamDetection />
+            </SignedIn>
           }
         />
+
+        {/* Authentication Pages */}
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
 
         {/* Redirect if not signed in */}
         <Route
