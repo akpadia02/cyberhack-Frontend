@@ -1,23 +1,35 @@
+// import Footer from "./components/Footer";
+// import Home from "./components/Home";
+// import Navbar from "./components/Navbar";
+
+// function App() {
+//   return (
+//     <div>
+//       <Navbar />
+//       <Home />
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// export default App;
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import AboutUs from "./components/AboutUs";
+import NewsCarousel from "./components/NewsCarousel";
 
 function App() {
-    return (
-        <div>
-            <Navbar />
-            <section id="hero-section" className="h-screen bg-blue-200 flex justify-center items-center">
-                <h2 className="text-4xl">Home Section</h2>
-            </section>
-            <section id="about-section" className="h-screen bg-green-200 flex justify-center items-center">
-                <h2 className="text-4xl">About Us</h2>
-            </section>
-            <section id="services-section" className="h-screen bg-red-200 flex justify-center items-center">
-                <h2 className="text-4xl">Services</h2>
-            </section>
-            <section id="contact-section" className="h-screen bg-yellow-200 flex justify-center items-center">
-                <h2 className="text-4xl">Contact</h2>
-            </section>
-        </div>
-    );
+  return (
+    <>
+      <Navbar /> {/* Navbar stays persistent */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/news" element={<NewsCarousel />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
