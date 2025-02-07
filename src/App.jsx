@@ -3,6 +3,7 @@ import { SignedIn, SignedOut, RedirectToSignIn, useUser, useAuth } from "@clerk/
 import { useEffect } from "react";
 import { db } from "../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { scheduleDailyNotifications } from './components/notificationService';
 
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
@@ -15,6 +16,7 @@ import Contact from "./components/Contact";
 import Pricing from "./components/Pricing";
 import SignInPage from "./components/SignIn";
 import SignUpPage from "./components/SignUp";
+import QuizTrivia from "./components/Trivia";
 
 // ✅ Function to save user data in Firestore
 const saveUserToFirestore = async (user, getToken) => {
@@ -72,44 +74,34 @@ const SaveUser = () => {
 };
 
 function App() {
+  useEffect(() => {
+    scheduleDailyNotifications();
+  }, []);
+
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={
-          <SignedIn>
-            <SaveUser /> {/* Ensures user is saved in Firestore */}
-            <Home />
-          </SignedIn>
-        } />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/news" element={<NewsCarousel />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/pricing" element={<Pricing />} />
+        {/* ✅ Home is accessible to both signed-in and signed-out users */}
+        <Route path="/" element={<Home />} />
+
+        {/* 🔐 Protected Routes - Require Sign In */}
+        <Route path="/about-us" element={<SignedIn><AboutUs /></SignedIn>} />
+        <Route path="/news" element={<SignedIn><NewsCarousel /></SignedIn>} />
+        <Route path="/contact" element={<SignedIn><Contact /></SignedIn>} />
+        <Route path="/pricing" element={<SignedIn><Pricing /></SignedIn>} />
+        <Route path="/trivia" element={<SignedIn><QuizTrivia /></SignedIn>} />
+
+        {/* 🔐 Authentication Pages */}
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
 
-        {/* Protected Routes */}
-        <Route
-          path="/profile-analysis"
-          element={
-            <ProfileAnalysis />
-          }
-        />
-        <Route
-          path="/message-spam-detector"
-          element={
-            <MessageSpamDetector/>
-          }
-        />
-        <Route
-          path="/image-spam-detector"
-          element={
-              <ImageSpamDetection />
-          }
-        />
+        {/* 🔐 Restricted Functionalities - Requires Sign In */}
+        <Route path="/profile-analysis" element={<SignedIn><ProfileAnalysis /></SignedIn>} />
+        <Route path="/message-spam-detector" element={<SignedIn><MessageSpamDetector /></SignedIn>} />
+        <Route path="/image-spam-detector" element={<SignedIn><ImageSpamDetection /></SignedIn>} />
 
-        {/* Redirect if not signed in */}
+        {/* 🔄 Redirect to Sign In if trying to access a protected route */}
         <Route
           path="*"
           element={
