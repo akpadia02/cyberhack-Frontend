@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ScamNews from "./ScamNew";
 
 const Home = () => {
     const [email, setEmail] = useState("");
@@ -47,6 +48,7 @@ const Home = () => {
                 </button>
             </div>
             <p className="mt-3 text-gray-500 text-sm hidden md:block max-w-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia earum dolorum officiis nemo aspernatur iusto iste expedita dolore ullam accusamus, tempore rerum officia labore optio alias exercitationem fugiat accusantium? Nostrum.</p>
+            {/* <ScamNews /> */}
         </div>
     );
 };
