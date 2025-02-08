@@ -17,7 +17,7 @@ const ProfileAnalysis = () => {
         setResult(null);
 
         try {
-            const response = await fetch("http://127.0.0.1/predict", {
+            const response = await fetch("https://9v655rvk-5000.inc1.devtunnels.ms/predict", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ profile: profileLink })
@@ -59,7 +59,7 @@ const ProfileAnalysis = () => {
 
             {result && (
                 <div className="mt-6 bg-white p-4 rounded-lg shadow-lg w-full max-w-lg text-left">
-                    <h2 className="text-2xl font-semibold">Profile Status: {result.is_fake ? "🚨 Fake" : "✅ Genuine"}</h2>
+                    <h2 className="text-2xl font-semibold">Profile Status: {result.fake_score === 1 ? "🚨 Fake" : "✅ Genuine"}</h2>
                     {result.insights && (
                         <>
                             <h3 className="mt-3 text-lg font-medium">⚠️ Key Indicators:</h3>
