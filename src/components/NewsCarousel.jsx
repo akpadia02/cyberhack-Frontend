@@ -4,7 +4,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 
 const API_KEY = "70bac416f79942228fe6e70784a86c20"; // Replace with your actual NewsAPI key
-const API_URL = `https://newsapi.org/v2/everything?q=instagram%20scam&sortBy=publishedAt&apiKey=${API_KEY}`;
+const API_URL = `https://newsapi.org/v2/everything?q=instagram%20scam&sortBy=publishedAt&apiKey=70bac416f79942228fe6e70784a86c20`;
 
 const NewsCarousel = () => {
     const [news, setNews] = useState([]);
