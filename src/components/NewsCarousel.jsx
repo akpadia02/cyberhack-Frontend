@@ -14,7 +14,7 @@ const NewsCarousel = () => {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch("https://newsapi.org/v2/everything?q=instagram%20scam&sortBy=publishedAt&apiKey=70bac416f79942228fe6e70784a86c20");
                 const data = await response.json();
                 if (data.articles) {
                     setNews(data.articles.slice(0, 10)); // Get only the latest 10 articles
