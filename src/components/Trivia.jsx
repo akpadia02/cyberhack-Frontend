@@ -12,6 +12,7 @@ const QuizTrivia = () => {
     const [showResult, setShowResult] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [answerFeedback, setAnswerFeedback] = useState(null); // ✅ New state for feedback
 
     const { user } = useUser();
     const userId = user ? user.id : null;
@@ -46,7 +47,7 @@ const QuizTrivia = () => {
 
     const fetchQuestions = async () => {
         try {
-            const q = query(collection(db, "cybersecurity_quiz")); // ✅ Correct collection name
+            const q = query(collection(db, "cybersecurity_quiz"));
             const querySnapshot = await getDocs(q);
             const loadedQuestions = querySnapshot.docs.map(doc => doc.data());
             setQuestions(loadedQuestions);
@@ -66,22 +67,30 @@ const QuizTrivia = () => {
         const userDoc = await getDoc(userDocRef);
         let userData = userDoc.exists() ? userDoc.data() : { attempts: 3, stars: 0 };
 
-        if (selectedOption === questions[currentQuestion].answer) {
+        const correctAnswer = questions[currentQuestion].answer;
+        if (selectedOption === correctAnswer) {
             setScore(score + 1);
             userData.stars += 100;
+            setAnswerFeedback("✅ Correct!");
+        } else {
+            setAnswerFeedback(`❌ Incorrect! The correct answer is: ${correctAnswer}`);
         }
 
-        userData.attempts -= 1; // Decrease attempt count
+        userData.attempts -= 1;
         await setDoc(userDocRef, userData, { merge: true });
 
         setAttempts(userData.attempts);
 
-        if (currentQuestion + 1 < questions.length && userData.attempts > 0) {
-            setCurrentQuestion(currentQuestion + 1);
-            setSelectedOption(null);
-        } else {
-            setShowResult(true);
-        }
+        // Delay moving to the next question for 2 seconds to show feedback
+        setTimeout(() => {
+            if (currentQuestion + 1 < questions.length && userData.attempts > 0) {
+                setCurrentQuestion(currentQuestion + 1);
+                setSelectedOption(null);
+                setAnswerFeedback(null); // Clear feedback for the next question
+            } else {
+                setShowResult(true);
+            }
+        }, 2000);
     };
 
     if (loading) {
@@ -90,7 +99,7 @@ const QuizTrivia = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen w-full text-center px-6 md:mt-10 mt-0">
-            <h1 className="text-4xl font-bold text-blue-600">Quiz Trivia</h1>
+            <h1 className="text-4xl font-bold text-blue-600">Quiz</h1>
             <p className="mt-2 text-gray-600">Test your knowledge with fun trivia questions!</p>
             <p className="mt-2 text-red-600">Attempts left: {attempts}</p>
 
@@ -114,6 +123,11 @@ const QuizTrivia = () => {
                                     </button>
                                 ))}
                             </div>
+
+                            {answerFeedback && (
+                                <p className="mt-2 text-lg font-semibold text-gray-700">{answerFeedback}</p>
+                            )}
+
                             <button
                                 className="mt-4 w-full bg-black text-white font-bold py-2 rounded-lg shadow-lg flex items-center justify-center"
                                 onClick={handleNext}

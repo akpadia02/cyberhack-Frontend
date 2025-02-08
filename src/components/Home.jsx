@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ScamNews from "./ScamNew";
+import { useUser } from "@clerk/clerk-react";
 
 const Home = () => {
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
+    const { isSignedIn } = useUser();
+
+    // Redirect unauthenticated users to sign-in page
+    const handleProtectedClick = (path) => {
+        if (!isSignedIn) {
+            navigate("/sign-in");
+        } else {
+            console.log(path);
+            navigate(path);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen w-full text-center px-6 md:mt-10 mt-0">
@@ -19,23 +31,23 @@ const Home = () => {
             <div className="mt-6 flex flex-wrap justify-center gap-3 w-full max-w-sm">
                 <button
                     className="w-60 px-4 py-3 bg-purple-200 text-purple-700 rounded-lg font-medium shadow-sm"
-                    onClick={() => navigate("/profile-analysis")}
+                    onClick={() => handleProtectedClick("/profile-analysis")}
                 >
                     🔍 Profile Analysis
                 </button>
                 <button className="w-60 px-1 py-3 bg-green-200 text-green-700 rounded-lg font-medium shadow-sm"
-                onClick={() => navigate("/message-spam-detector")}>
+                onClick={() => handleProtectedClick("/message-spam-detector")}>
                     🤖 Message Spam Detection
                 </button>
                 <button className="w-60 px-1 py-3 bg-blue-200 text-blue-700 rounded-lg font-medium shadow-sm"
-                onClick={() => navigate("/image-spam-detector")}>
+                onClick={() => handleProtectedClick("/image-spam-detector")}>
                     📸 Image Spam Detection
                 </button>
             </div>
 
             {/* 
             Email Input & CTA */}
-            <div className="mt-6 flex flex-col items-center w-full max-w-md hidden md:block">
+            {/* <div className="mt-6 flex flex-col items-center w-full max-w-md hidden md:block">
                 <input
                     type="email"
                     placeholder="Enter your email"
@@ -48,7 +60,7 @@ const Home = () => {
                 </button>
             </div>
             <p className="mt-3 text-gray-500 text-sm hidden md:block max-w-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia earum dolorum officiis nemo aspernatur iusto iste expedita dolore ullam accusamus, tempore rerum officia labore optio alias exercitationem fugiat accusantium? Nostrum.</p>
-            {/* <ScamNews /> */}
+            <ScamNews /> */}
         </div>
     );
 };
