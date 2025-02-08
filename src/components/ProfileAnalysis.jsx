@@ -17,7 +17,7 @@ const ProfileAnalysis = () => {
         setResult(null);
 
         try {
-            const response = await fetch("https://9v655rvk-5000.inc1.devtunnels.ms/predict", {
+            const response = await fetch("https://x0ghgn5c-5000.inc1.devtunnels.ms/predict", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ profile: profileLink })

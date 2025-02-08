@@ -12,6 +12,14 @@ const CyberSecurityQuiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [points, setPoints] = useState(Math.floor(Math.random() * 401) + 100);
+  const [claimed, setClaimed] = useState(false);
+
+  const giftCards = [
+    { name: "Amazon Gift Card", cost: 300 },
+    { name: "Google Play Gift Card", cost: 200 },
+    { name: "Steam Wallet Code", cost: 500 },
+  ];
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -45,6 +53,10 @@ const CyberSecurityQuiz = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? questions.length - 1 : prevIndex - 1
     );
+  };
+
+  const handleClaimReward = () => {
+    setClaimed(true);
   };
 
   const handlers = useSwipeable({
@@ -119,8 +131,37 @@ const CyberSecurityQuiz = () => {
           <FaChevronRight size={24} />
         </button>
       </div>
+
+      {/* Jump to Rewards Button */}
+      <button
+        onClick={() => document.getElementById("rewards-section").scrollIntoView({ behavior: "smooth" })}
+        className="mt-6 p-3 w-full bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+      >
+        Jump to Claim Reward
+      </button>
+
+      {/* Rewards Section */}
+      <div id="rewards-section" className="mt-10 bg-gray-100 p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-bold">Your Points: {points}</h3>
+        <h4 className="text-lg mt-4 font-semibold">Available Gift Cards:</h4>
+        <ul className="mt-2">
+          {giftCards.map((gift, index) => (
+            <li key={index} className="p-3 border-b last:border-b-0">
+              {gift.name} - {gift.cost} Points
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={handleClaimReward}
+          disabled={claimed}
+          className={`mt-4 p-3 w-full rounded-lg text-white ${claimed ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"}`}
+        >
+          {claimed ? "Reward Claimed" : "Claim Reward"}
+        </button>
+      </div>
     </div>
   );
 };
 
 export default CyberSecurityQuiz;
+  
